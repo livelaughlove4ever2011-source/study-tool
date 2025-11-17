@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>lil study session</title>
+<style>
+    body {
+        margin: 0;
+        font-family: "Garamond";
+        background: #fce3fc;
+        color: #703d69;
+        display: flex;
+        justify-content: center;
+        padding: 40px;
+    }
+
+    .container {
+        width: 380px;
+    }
+
+    h2 {
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .section {
+        margin-bottom: 28px;
+    }
+
+    input, select, button, textarea {
+        width: 100%;
+        padding: 10px 12px;
+        border-radius: 8px;
+        background: #faebf9;
+        border: 1px solid #c9a3c7;
+        font-size: 14px;
+        margin-top: 6px;
+    }
+
+    button {
+        background: #703d69;
+        color: white;
+        cursor: pointer;
+        transition: 0.2s;
+        font-family: "Times New Roman", Times, serif
+    }
+
+    button:hover {
+        opacity: 0.85;
+    }
+
+    .timer-display {
+        text-align: center;
+        font-size: 48px;
+        font-weight: 600;
+        margin: 20px 0;
+    }
+
+    .small-btn {
+        width: auto;
+        padding: 8px 14px;
+        margin-top: 8px;
+    }
+
+    .list-box {
+        background: #f7ebf7;
+        padding: 12px;
+        border-radius: 8px;
+        font-size: 14px;
+        margin-top: 8px;
+        min-height: 40px;
+    }
+
+    .topic-pill {
+        display: inline-block;
+        background: #e6dae5;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 13px;
+        margin: 4px 4px 0 0;
+    }
+
+    .topic-pill span {
+        margin-left: 8px;
+        cursor: pointer;
+        color: #777;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="section">
+        <h2>topics to cover</h2>
+        <input id="newTopic" placeholder="add a topic">
+        <button onclick="addTopic()">add topic</button>
+
+        <div id="topicList" class="list-box"></div>
+    </div>
+  
+    <div class="section">
+        <h2>study session</h2>
+
+        <label>topics below:</label>
+        <select id="selectedTopic"></select>
+
+        <label>notes about covered topics: </label>
+        <textarea id="sessionGoals" rows="3" 
+        placeholder="list/notes"></textarea>
+    
+
+        <label>study time (min)</label>
+        <input id="timeInput" type="number" value="15" min="1">
+        <button onclick="startTimer()">start session</button>
+    </div>
+
+
+    <div class="section">
+        <div class="timer-display" id="timer">00:00</div>
+        <button class="small-btn" onclick="pauseTimer()">pause</button>
+        <button class="small-btn" onclick="resumeTimer()">resume</button>
+        <button class="small-btn" onclick="resetTimer()">reset</button>
+    </div>
+
+</div>
+
+<script>
+    let topics = JSON.parse(localStorage.getItem("topics")) || [];
+    const topicListDiv = document.getElementById("topicList");
+    const topicSelect = document.getElementById("selectedTopic");
+
+    function displayTopics() {
+        topicListDiv.innerHTML = "";
+        topicSelect.innerHTML = "";
+
+        topics.forEach((t, i) => {
+          
+            let pill = document.createElement("div");
+            pill.className = "topic-pill";
+            pill.innerHTML = `${t} <span onclick="deleteTopic(${i})">&times;</span>`;
+            topicListDiv.appendChild(pill);
+
+         
+            let opt = document.createElement("option");
+            opt.value = t;
+            opt.textContent = t;
+            topicSelect.appendChild(opt);
+        });
+
+        localStorage.setItem("topics", JSON.stringify(topics));
+    }
+
+    function addTopic() {
+        let value = document.getElementById("newTopic").value.trim();
+        if (value !== "" && !topics.includes(value)) {
+            topics.push(value);
+            document.getElementById("newTopic").value = "";
+            displayTopics();
+        }
+    }
+
+    function deleteTopic(i) {
+        topics.splice(i, 1);
+        displayTopics();
+    }
+
+    displayTopics();
+
+    
+    let timerInterval;
+    let timeLeft = 0;
+    let isPaused = false;
+
+    function startTimer() {
+        let minutes = parseInt(document.getElementById("timeInput").value);
+        timeLeft = minutes * 60;
+        updateDisplay();
+
+        clearInterval(timerInterval);
+        timerInterval = setInterval(countdown, 1000);
+    }
+
+    function countdown() {
+        if (!isPaused) {
+            if (timeLeft > 0) {
+                timeLeft--;
+                updateDisplay();
+            } else {
+                clearInterval(timerInterval);
+                alert("Time’s up!");
+            }
+        }
+    }
+
+    function updateDisplay() {
+        let min = Math.floor(timeLeft / 60);
+        let sec = timeLeft % 60;
+        document.getElementById("timer").textContent =
+            `${min.toString().padStart(2, "0")}:${sec.toString().padStart(2, "0")}`;
+    }
+
+    function pauseTimer() {
+        isPaused = true;
+    }
+
+    function resumeTimer() {
+        isPaused = false;
+    }
+
+    function resetTimer() {
+        clearInterval(timerInterval);
+        timeLeft = 0;
+        updateDisplay();
+    }
+</script>
+
+</body>
+</html>
