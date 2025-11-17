@@ -2,218 +2,345 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>lil study session</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>study planner</title>
 <style>
-    body {
-        margin: 0;
-        font-family: "Garamond";
-        background: #fce3fc;
-        color: #703d69;
-        display: flex;
-        justify-content: center;
-        padding: 40px;
-    }
 
-    .container {
-        width: 380px;
-    }
+body {
+    margin: 0;
+    font-family: "Times New Roman", serif;
+    background: #fff0f5;
+    color: #703d69;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 10px;
+    height: 100vh;
+    box-sizing: border-box;
+}
 
-    h2 {
-        font-weight: 700;
-        margin-bottom: 10px;
-    }
+.container {
+    display: flex;
+    width: 900px;
+    gap: 30px;
+}
 
-    .section {
-        margin-bottom: 28px;
-    }
 
-    input, select, button, textarea {
-        width: 100%;
-        padding: 10px 12px;
-        border-radius: 8px;
-        background: #faebf9;
-        border: 1px solid #c9a3c7;
-        font-size: 14px;
-        margin-top: 6px;
-    }
+.left-column {
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
 
-    button {
-        background: #703d69;
-        color: white;
-        cursor: pointer;
-        transition: 0.2s;
-        font-family: "Times New Roman", Times, serif
-    }
+.session-card {
+    background: #faebf9;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(112, 61, 105, 0.2);
+    padding: 15px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    font-family: "Times New Roman", serif;
+}
 
-    button:hover {
-        opacity: 0.85;
-    }
+.session-card:hover {
+    transform: translateY(-4px);
+}
 
-    .timer-display {
-        text-align: center;
-        font-size: 48px;
-        font-weight: 600;
-        margin: 20px 0;
-    }
+.session-card h3 {
+    margin: 0;
+    font-size: 18px;
+}
 
-    .small-btn {
-        width: auto;
-        padding: 8px 14px;
-        margin-top: 8px;
-    }
+.session-card button {
+    background: #99398c;
+    font-size: 12px;
+    padding: 4px 8px;
+    margin-top: 6px;
+    font-family: "Times New Roman", serif;
+}
 
-    .list-box {
-        background: #f7ebf7;
-        padding: 12px;
-        border-radius: 8px;
-        font-size: 14px;
-        margin-top: 8px;
-        min-height: 40px;
-    }
+.session-card button:hover {
+    background: #cc21b4;
+}
 
-    .topic-pill {
-        display: inline-block;
-        background: #e6dae5;
-        padding: 5px 10px;
-        border-radius: 20px;
-        font-size: 13px;
-        margin: 4px 4px 0 0;
-    }
 
-    .topic-pill span {
-        margin-left: 8px;
-        cursor: pointer;
-        color: #777;
-    }
+.right-column {
+    flex: 1;
+    background: #faebf9;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 10px 20px rgba(112, 61, 105, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.right-column h2 {
+    margin: 0;
+    font-size: 22px;
+    border-bottom: 2px solid #e6dae5;
+    padding-bottom: 6px;
+}
+
+input, textarea, button {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid #c9a3c7;
+    background: #f7ebf7;
+    font-size: 15px;
+    outline: none;
+    margin-top: 6px;
+    font-family: "Times New Roman", serif;
+}
+
+input:focus, textarea:focus {
+    border-color: #ff66a3;
+    box-shadow: 0 0 6px rgba(255,102,163,0.3);
+}
+
+button {
+    background: #99398c;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 12px;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, background 0.25s;
+    font-family: "Times New Roman", serif;
+
+}
+
+button:hover {
+    background: #cc21b4;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(112, 61, 105, 0.3);
+}
+
+
+.topic-item {
+    display: flex;
+    align-items: center;
+    margin: 6px 0;
+}
+
+.topic-item input {
+    width: auto;
+    margin-right: 10px;
+}
+
+
+.timer-container {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.timer-display {
+    font-size: 36px;
+    font-weight: 700;
+    margin: 10px 0;
+    color: #cc21b4;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 12px;
+    background: #f7ebf7;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 8px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #ff66a3;
+    width: 0%;
+    transition: width 1s linear;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); color: #ff66a3; }
+    50% { transform: scale(1.1); color: #ff99c2; }
+    100% { transform: scale(1); color: #ff66a3; }
+}
 </style>
 </head>
 <body>
 
 <div class="container">
-
-    <div class="section">
-        <h2>topics to cover</h2>
-        <input id="newTopic" placeholder="add a topic">
-        <button onclick="addTopic()">add topic</button>
-
-        <div id="topicList" class="list-box"></div>
-    </div>
-  
-    <div class="section">
-        <h2>study session</h2>
-
-        <label>topics below:</label>
-        <select id="selectedTopic"></select>
-
-        <label>notes about covered topics: </label>
-        <textarea id="sessionGoals" rows="3" 
-        placeholder="list/notes"></textarea>
-    
-
-        <label>study time (min)</label>
-        <input id="timeInput" type="number" value="15" min="1">
-        <button onclick="startTimer()">start session</button>
+    <div class="left-column">
+        <div class="session-card">
+            <h3>new session</h3>
+            <input id="sessionName" placeholder="session title">
+            <textarea id="sessionNotes" rows="2" placeholder="notes/goals to achieve in session"></textarea>
+            <input id="sessionTime" type="number" placeholder="min" min="1" value="25">
+            <button onclick="createSession()">create</button>
+        </div>
+        <div id="sessionsContainer"></div>
     </div>
 
-
-    <div class="section">
-        <div class="timer-display" id="timer">00:00</div>
-        <button class="small-btn" onclick="pauseTimer()">pause</button>
-        <button class="small-btn" onclick="resumeTimer()">resume</button>
-        <button class="small-btn" onclick="resetTimer()">reset</button>
+    <div class="right-column" id="activeSession">
+        <h2>select a study session</h2>
+        <p>topics, timer, & notes will appear here</p>
     </div>
-
 </div>
 
 <script>
-    let topics = JSON.parse(localStorage.getItem("topics")) || [];
-    const topicListDiv = document.getElementById("topicList");
-    const topicSelect = document.getElementById("selectedTopic");
+let sessions = JSON.parse(localStorage.getItem("sessions")) || [];
+let activeIndex = null;
+let intervals = {};
 
-    function displayTopics() {
-        topicListDiv.innerHTML = "";
-        topicSelect.innerHTML = "";
+function saveSessions(){ localStorage.setItem("sessions", JSON.stringify(sessions)); }
 
-        topics.forEach((t, i) => {
-          
-            let pill = document.createElement("div");
-            pill.className = "topic-pill";
-            pill.innerHTML = `${t} <span onclick="deleteTopic(${i})">&times;</span>`;
-            topicListDiv.appendChild(pill);
+function createSession(){
+    const name = document.getElementById("sessionName").value.trim();
+    const notes = document.getElementById("sessionNotes").value.trim();
+    const time = parseInt(document.getElementById("sessionTime").value);
+    if(!name || !time) return;
+    sessions.push({name, notes, time, topics:[], completed:0, running:false, timeLeft: time*60});
+    document.getElementById("sessionName").value = "";
+    document.getElementById("sessionNotes").value = "";
+    displaySessions();
+    saveSessions();
+}
 
-         
-            let opt = document.createElement("option");
-            opt.value = t;
-            opt.textContent = t;
-            topicSelect.appendChild(opt);
-        });
+function displaySessions(){
+    const container = document.getElementById("sessionsContainer");
+    container.innerHTML = "";
+    sessions.forEach((s,i)=>{
+        const card = document.createElement("div");
+        card.className = "session-card";
+        card.innerHTML = `
+            <h3>${s.name}</h3>
+            <p>${s.notes}</p>
+            <p>Topics: ${s.topics.length}</p>
+            <button onclick="deleteSession(${i})">Delete</button>
+        `;
+        card.onclick = ()=>{ if(event.target.tagName!=="BUTTON"){setActive(i);} };
+        container.appendChild(card);
+    });
+}
 
-        localStorage.setItem("topics", JSON.stringify(topics));
+function deleteSession(i){
+    clearInterval(intervals[i]);
+    sessions.splice(i,1);
+    if(activeIndex === i) activeIndex=null;
+    displaySessions();
+    displayActive();
+    saveSessions();
+}
+
+function setActive(i){
+    activeIndex=i;
+    displayActive();
+}
+
+function displayActive(){
+    const container = document.getElementById("activeSession");
+    if(activeIndex===null){ 
+        container.innerHTML=`<h2>Select a session</h2><p>Topics, timer, and notes will appear here.</p>`; 
+        return;
     }
+    const s = sessions[activeIndex];
+    container.innerHTML=`
+        <h2>${s.name}</h2>
+        <p><em>${s.notes}</em></p>
+        <div id="topicsList">
+            ${s.topics.map((t,j)=>`
+                <div class="topic-item">
+                    <input type="checkbox" ${t.completed?'checked':''} onclick="toggleTopic(${j})">
+                    <span>${t.title}</span>
+                </div>
+            `).join('')}
+        </div>
+        <input placeholder="add topic" id="newTopic">
+        <button onclick="addTopic()">Add Topic</button>
+        <div class="timer-container">
+            <div class="timer-display" id="timer">${formatTime(s.timeLeft)}</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress" style="width:${getProgress()}%"></div>
+            </div>
+            <button onclick="startTimer()">Start</button>
+            <button onclick="pauseTimer()">Pause</button>
+            <button onclick="resetTimer()">Reset</button>
+        </div>
+        <p>Completed: <span id="completed">${s.completed}</span> / ${s.topics.length}</p>
+    `;
+}
 
-    function addTopic() {
-        let value = document.getElementById("newTopic").value.trim();
-        if (value !== "" && !topics.includes(value)) {
-            topics.push(value);
-            document.getElementById("newTopic").value = "";
-            displayTopics();
+function addTopic(){
+    const input=document.getElementById("newTopic");
+    const title=input.value.trim();
+    if(!title) return;
+    sessions[activeIndex].topics.push({title, completed:false});
+    input.value="";
+    displayActive();
+    displaySessions();
+    saveSessions();
+}
+
+function toggleTopic(tIndex){
+    const t = sessions[activeIndex].topics[tIndex];
+    t.completed = !t.completed;
+    sessions[activeIndex].completed = sessions[activeIndex].topics.filter(t=>t.completed).length;
+    displayActive();
+    displaySessions();
+    saveSessions();
+}
+
+
+function startTimer(){
+    const i=activeIndex;
+    if(intervals[i]) clearInterval(intervals[i]);
+    sessions[i].running=true;
+    intervals[i]=setInterval(()=>{
+        if(!sessions[i].running) return;
+        if(sessions[i].timeLeft>0){
+            sessions[i].timeLeft--;
+            updateTimer();
+        } else{
+            clearInterval(intervals[i]);
+            sessions[i].running=false;
+            alert(`session "${sessions[i].name}" complete`);
         }
-    }
+    },1000);
+}
 
-    function deleteTopic(i) {
-        topics.splice(i, 1);
-        displayTopics();
-    }
+function pauseTimer(){ sessions[activeIndex].running=false; }
+function resetTimer(){ 
+    const s=sessions[activeIndex];
+    s.timeLeft=s.time*60;
+    s.running=false;
+    updateTimer();
+}
 
-    displayTopics();
+function updateTimer(){
+    const s=sessions[activeIndex];
+    const timerEl=document.getElementById("timer");
+    timerEl.textContent=formatTime(s.timeLeft);
+    const progressEl=document.getElementById("progress");
+    progressEl.style.width=getProgress()+"%";
+    if(s.timeLeft<=30 && s.timeLeft>0){
+        timerEl.style.animation="pulse 1s infinite";
+    } else { timerEl.style.animation="none"; }
+    saveSessions();
+}
 
-    
-    let timerInterval;
-    let timeLeft = 0;
-    let isPaused = false;
+function formatTime(seconds){
+    const m=Math.floor(seconds/60).toString().padStart(2,"0");
+    const s=(seconds%60).toString().padStart(2,"0");
+    return `${m}:${s}`;
+}
 
-    function startTimer() {
-        let minutes = parseInt(document.getElementById("timeInput").value);
-        timeLeft = minutes * 60;
-        updateDisplay();
+function getProgress(){
+    const s=sessions[activeIndex];
+    return ((s.time*60-s.timeLeft)/(s.time*60)*100).toFixed(1);
+}
 
-        clearInterval(timerInterval);
-        timerInterval = setInterval(countdown, 1000);
-    }
-
-    function countdown() {
-        if (!isPaused) {
-            if (timeLeft > 0) {
-                timeLeft--;
-                updateDisplay();
-            } else {
-                clearInterval(timerInterval);
-                alert("STOP STUDYING");
-            }
-        }
-    }
-
-    function updateDisplay() {
-        let min = Math.floor(timeLeft / 60);
-        let sec = timeLeft % 60;
-        document.getElementById("timer").textContent =
-            `${min.toString().padStart(2, "0")}:${sec.toString().padStart(2, "0")}`;
-    }
-
-    function pauseTimer() {
-        isPaused = true;
-    }
-
-    function resumeTimer() {
-        isPaused = false;
-    }
-
-    function resetTimer() {
-        clearInterval(timerInterval);
-        timeLeft = 0;
-        updateDisplay();
-    }
+displaySessions();
+displayActive();
 </script>
-
 </body>
 </html>
